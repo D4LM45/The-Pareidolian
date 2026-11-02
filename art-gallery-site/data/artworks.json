@@ -1,0 +1,114 @@
+[
+  {
+    "title": "Signal Bloom",
+    "category": "Abstract",
+    "date": "2026-10-01",
+    "image": "/images/signal-bloom.jpg",
+    "mockups": [
+      "/images/signal-bloom-wall.jpg",
+      "/images/signal-bloom-tee.jpg",
+      "/images/signal-bloom-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": true
+  },
+  {
+    "title": "Night Market Frequency",
+    "category": "Abstract",
+    "date": "2026-09-04",
+    "image": "/images/night-market-frequency.jpg",
+    "mockups": [
+      "/images/night-market-frequency-wall.jpg",
+      "/images/night-market-frequency-tee.jpg",
+      "/images/night-market-frequency-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": false
+  },
+  {
+    "title": "One Bad Day",
+    "category": "Posters",
+    "date": "2026-08-07",
+    "image": "/images/one-bad-day.jpg",
+    "mockups": [
+      "/images/one-bad-day-wall.jpg",
+      "/images/one-bad-day-tee.jpg",
+      "/images/one-bad-day-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": true
+  },
+  {
+    "title": "Sole Theory 01",
+    "category": "Shoe Concepts",
+    "date": "2026-07-10",
+    "image": "/images/sole-theory-01.jpg",
+    "mockups": [
+      "/images/sole-theory-01-wall.jpg",
+      "/images/sole-theory-01-tee.jpg",
+      "/images/sole-theory-01-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": false
+  },
+  {
+    "title": "Grain Memory",
+    "category": "TRad-IsH Wood",
+    "date": "2026-06-13",
+    "image": "/images/grain-memory.jpg",
+    "mockups": [
+      "/images/grain-memory-wall.jpg",
+      "/images/grain-memory-tee.jpg",
+      "/images/grain-memory-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": false
+  },
+  {
+    "title": "Static Prayer",
+    "category": "Abstract",
+    "date": "2026-05-16",
+    "image": "/images/static-prayer.jpg",
+    "mockups": [
+      "/images/static-prayer-wall.jpg",
+      "/images/static-prayer-tee.jpg",
+      "/images/static-prayer-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": false
+  },
+  {
+    "title": "Afterglow Protocol",
+    "category": "Posters",
+    "date": "2026-04-19",
+    "image": "/images/afterglow-protocol.jpg",
+    "mockups": [
+      "/images/afterglow-protocol-wall.jpg",
+      "/images/afterglow-protocol-tee.jpg",
+      "/images/afterglow-protocol-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": false
+  },
+  {
+    "title": "Red Dust Rhythm",
+    "category": "TRad-IsH Wood",
+    "date": "2026-03-22",
+    "image": "/images/red-dust-rhythm.jpg",
+    "mockups": [
+      "/images/red-dust-rhythm-wall.jpg",
+      "/images/red-dust-rhythm-tee.jpg",
+      "/images/red-dust-rhythm-mug.jpg"
+    ],
+    "description": "Sample piece \u2014 replace me from your upload dashboard. A short line about the idea, the mood, or how it was made.",
+    "gumroad": "https://gumroad.com",
+    "featured": false
+  }
+]

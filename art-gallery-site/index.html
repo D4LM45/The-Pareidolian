@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery</title>
+<meta name="description" content="Digital abstract art gallery">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --ink:#111111; --muted:#7a7a76; --line:#e8e6e1; --soft:#f6f5f2;
+    --serif:"Instrument Serif", Georgia, serif;
+    --sans:"Inter Tight", system-ui, -apple-system, Segoe UI, sans-serif;
+    --pad:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  section{scroll-margin-top:72px}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%;-webkit-user-drag:none;user-select:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+    display:flex;justify-content:space-between;align-items:center;padding:18px var(--pad);border-bottom:1px solid transparent;transition:border-color .3s}
+  header.scrolled{border-color:var(--line)}
+  .logo{font-family:var(--serif);font-size:28px;letter-spacing:.01em;line-height:1}
+  nav{display:flex;gap:28px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  nav a{color:var(--muted);transition:color .2s}
+  nav a:hover{color:var(--ink)}
+
+  /* Hero */
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:center;padding:clamp(32px,7vw,96px) var(--pad) clamp(40px,6vw,80px)}
+  .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,7.5vw,112px);line-height:.95;letter-spacing:-.01em}
+  .hero h1 em{color:var(--muted)}
+  .hero p{margin-top:24px;max-width:38ch;color:var(--muted);font-size:16px}
+  .hero-cta{display:inline-flex;gap:10px;margin-top:32px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:4px}
+  .hero-art{background:var(--soft);padding:clamp(20px,4vw,56px);cursor:zoom-in}
+  .hero-art img{margin:auto;max-height:68vh;width:auto;box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}
+  .hero-cap{margin-top:14px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+
+  /* Filters */
+  .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;padding:0 var(--pad);margin:24px 0 28px}
+  .section-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4vw,52px)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:8px 16px;border:1px solid var(--line);border-radius:999px;font-size:13px;transition:all .2s}
+  .chip:hover{border-color:var(--ink)}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .chip sup{font-size:10px;margin-left:3px;opacity:.6}
+
+  /* Grid */
+  .grid{columns:3 300px;column-gap:clamp(16px,2.5vw,36px);padding:0 var(--pad) 40px}
+  .card{break-inside:avoid;margin-bottom:clamp(28px,3.5vw,52px);cursor:zoom-in;opacity:0;transform:translateY(16px);animation:rise .6s forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .card .frame{background:var(--soft);padding:clamp(14px,2vw,26px);overflow:hidden}
+  .card img{width:100%;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .card:hover img{transform:scale(1.025)}
+  .card .meta{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-size:14px}
+  .card .meta span:last-child{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+  .card .mk{font-size:12px;color:var(--muted);margin-top:2px}
+  .empty{padding:60px var(--pad);color:var(--muted);text-align:center}
+
+  /* About */
+  .about{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(24px,5vw,80px);padding:clamp(56px,8vw,120px) var(--pad);border-top:1px solid var(--line);margin-top:40px}
+  .about h2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,5vw,64px);line-height:1}
+  .about p{font-size:clamp(17px,1.6vw,21px);max-width:52ch}
+  .links{display:flex;gap:24px;flex-wrap:wrap;margin-top:28px;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+  .links a{border-bottom:1px solid var(--line);padding-bottom:3px}
+  .links a:hover{border-color:var(--ink)}
+  footer{padding:28px var(--pad);border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px}
+
+  /* Viewer */
+  .viewer{position:fixed;inset:0;z-index:50;background:#fff;display:none;grid-template-columns:1fr minmax(300px,380px)}
+  .viewer.open{display:grid;animation:fade .25s}
+  @keyframes fade{from{opacity:0}}
+  .stage{position:relative;background:var(--soft);display:flex;flex-direction:column;min-height:0}
+  .stage-img{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,56px);min-height:0}
+  .stage-img img{max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 30px 60px -34px rgba(0,0,0,.4);animation:fade .3s}
+  .thumbs{display:flex;gap:10px;padding:0 clamp(16px,3vw,40px) clamp(16px,3vw,28px);overflow-x:auto;justify-content:center}
+  .thumb{flex:0 0 auto;width:74px;text-align:center;font-size:11px;color:var(--muted);opacity:.6;transition:opacity .2s}
+  .thumb img{width:74px;height:74px;object-fit:cover;border:2px solid transparent;margin-bottom:5px;background:#fff}
+  .thumb.on,.thumb:hover{opacity:1;color:var(--ink)}
+  .thumb.on img{border-color:var(--ink)}
+  .side{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;overflow-y:auto;border-left:1px solid var(--line)}
+  .side-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:auto}
+  .close{font-size:13px;letter-spacing:.08em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+  .counter{font-size:12px;color:var(--muted)}
+  .side .cat{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:40px}
+  .side h3{font-family:var(--serif);font-weight:400;font-size:clamp(36px,3.4vw,52px);line-height:1;margin:10px 0 18px}
+  .side .desc{color:#444}
+  .side .year{font-size:13px;color:var(--muted);margin-top:16px}
+  .buy{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding:18px 22px;background:var(--ink);color:#fff;font-size:14px;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}
+  .buy:hover{background:#333}
+  .buy.disabled{background:var(--line);color:var(--muted);pointer-events:none}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .pager{display:flex;justify-content:space-between;margin-top:auto;padding-top:36px;font-size:13px}
+  .pager button{display:flex;gap:8px;align-items:center;color:var(--muted)}
+  .pager button:hover{color:var(--ink)}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;font-size:18px;opacity:.85}
+  .arrow:hover{opacity:1}
+  .arrow.l{left:16px}.arrow.r{right:16px}
+
+  @media (max-width:860px){
+    nav{gap:18px}
+    .hero,.about{grid-template-columns:1fr}
+    .hero-art{order:-1}
+    .viewer{grid-template-columns:1fr;grid-template-rows:62vh auto;overflow-y:auto}
+    .side{border-left:0;border-top:1px solid var(--line)}
+    .side .cat{margin-top:8px}
+    .side-top{position:fixed;top:0;left:0;right:0;padding:14px 20px;background:rgba(255,255,255,.9);z-index:2}
+    .stage{padding-top:48px}
+    .arrow{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <a href="#" class="logo" id="logo">&nbsp;</a>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#" id="shopLink" target="_blank" rel="noopener">Shop ↗</a>
+  </nav>
+</header>
+
+<section class="hero" id="hero" hidden>
+  <div>
+    <h1 id="heroTitle"></h1>
+    <p id="heroTag"></p>
+    <a href="#work" class="hero-cta">View the gallery <span>↓</span></a>
+  </div>
+  <div>
+    <div class="hero-art" id="heroArt"></div>
+    <div class="hero-cap"><span id="heroCap"></span><span>Featured</span></div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-head">
+    <h2>The Work</h2>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="about" id="about">
+  <h2 id="aboutTitle">About</h2>
+  <div>
+    <p id="aboutText"></p>
+    <div class="links" id="links"></div>
+  </div>
+</section>
+
+<footer>
+  <span id="copy"></span>
+  <span>Purchases are handled securely on Gumroad</span>
+</footer>
+
+<!-- Artwork viewer -->
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Artwork viewer">
+  <div class="stage">
+    <div class="stage-img" id="stageImg"></div>
+    <button class="arrow l" id="imgPrev" aria-label="Previous image">←</button>
+    <button class="arrow r" id="imgNext" aria-label="Next image">→</button>
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+  <aside class="side">
+    <div class="side-top">
+      <button class="close" id="close">✕ Close</button>
+      <span class="counter" id="counter"></span>
+    </div>
+    <div class="cat" id="vCat"></div>
+    <h3 id="vTitle"></h3>
+    <p class="desc" id="vDesc"></p>
+    <p class="year" id="vYear"></p>
+    <a class="buy" id="vBuy" target="_blank" rel="noopener"><span>Buy on Gumroad</span><span>↗</span></a>
+    <p class="note">Opens Gumroad in a new tab.</p>
+    <div class="pager">
+      <button id="pPrev">← Previous piece</button>
+      <button id="pNext">Next piece →</button>
+    </div>
+  </aside>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  // Works whether the site lives at the root of a domain or in a sub-folder
+  const src = p => (p || "").replace(/^\/+/, "");
+  const slug = s => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  let site = {}, art = [], shown = [], filter = "All", cur = -1, img = 0;
+
+  async function load() {
+    const get = async f => { try { const r = await fetch(f, {cache: "no-store"}); return r.ok ? r.json() : null; } catch { return null; } };
+    site = (await get("data/site.json")) || {};
+    art = ((await get("data/artworks.json")) || [])
+      .filter(a => a && a.title && a.image)
+      .map(a => ({...a, id: slug(a.title), mockups: (a.mockups || []).filter(Boolean)}))
+      .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+    renderSite(); renderFilters(); renderGrid(); routeFromHash();
+  }
+
+  function renderSite() {
+    const name = site.name || "Gallery";
+    document.title = name + " — Gallery";
+    $("logo").textContent = name;
+    $("copy").textContent = "© " + new Date().getFullYear() + " " + name;
+    $("shopLink").href = site.gumroad_store || "#";
+    $("aboutText").textContent = site.about || "";
+    const links = [["Gumroad", site.gumroad_store], ["Instagram", site.instagram], ["Behance", site.behance]]
+      .filter(l => l[1]).map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${t} ↗</a>`);
+    if (site.email) links.push(`<span>${esc(site.email)}</span>`);
+    $("links").innerHTML = links.join("");
+
+    const feat = art.find(a => a.featured) || art[0];
+    if (feat) {
+      $("hero").hidden = false;
+      $("heroTitle").innerHTML = esc(name) + "<br><em>" + "Gallery" + "</em>";
+      $("heroTag").textContent = site.tagline || "";
+      $("heroArt").innerHTML = `<img src="${esc(src(feat.image))}" alt="${esc(feat.title)}">`;
+      $("heroArt").onclick = () => open(feat.id);
+      $("heroCap").textContent = feat.title;
+    }
+  }
+
+  function renderFilters() {
+    const cats = ["All", ...new Set(art.map(a => a.category).filter(Boolean))];
+    $("filters").innerHTML = "";
+    cats.forEach(c => {
+      const n = c === "All" ? art.length : art.filter(a => a.category === c).length;
+      const b = el("button", "chip" + (c === filter ? " on" : ""), `${esc(c)}<sup>${n}</sup>`);
+      b.onclick = () => { filter = c; renderFilters(); renderGrid(); };
+      $("filters").appendChild(b);
+    });
+  }
+
+  function renderGrid() {
+    shown = filter === "All" ? art : art.filter(a => a.category === filter);
+    const g = $("grid"); g.innerHTML = "";
+    if (!shown.length) { g.innerHTML = `<p class="empty">No artworks here yet.</p>`; return; }
+    shown.forEach((a, i) => {
+      const c = el("article", "card");
+      c.style.animationDelay = Math.min(i * 60, 600) + "ms";
+      const mk = a.mockups.length ? `<div class="mk">+ ${a.mockups.length} mockup${a.mockups.length > 1 ? "s" : ""}</div>` : "";
+      c.innerHTML = `<div class="frame"><img loading="lazy" src="${esc(src(a.image))}" alt="${esc(a.title)}"></div>
+        <div class="meta"><span>${esc(a.title)}</span><span>${esc(a.category || "")}</span></div>${mk}`;
+      c.onclick = () => open(a.id);
+      g.appendChild(c);
+    });
+  }
+
+  // ---- Viewer ----
+  function open(id) { if (location.hash !== "#" + id) location.hash = id; else show(id); }
+  function show(id) {
+    const list = shown.some(a => a.id === id) ? shown : art;
+    if (list !== shown) { shown = art; }
+    cur = shown.findIndex(a => a.id === id);
+    if (cur < 0) return close();
+    img = 0; paint();
+    $("viewer").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function close() {
+    $("viewer").classList.remove("open");
+    document.body.style.overflow = "";
+    if (location.hash && location.hash !== "#work" && location.hash !== "#about")
+      history.replaceState(null, "", location.pathname + location.search);
+  }
+  function views(a) { return [{u: a.image, l: "Artwork"}, ...a.mockups.map((u, i) => ({u, l: "Mockup " + (i + 1)}))]; }
+  function paint() {
+    const a = shown[cur], v = views(a);
+    $("stageImg").innerHTML = `<img src="${esc(src(v[img].u))}" alt="${esc(a.title)} — ${v[img].l}">`;
+    $("thumbs").innerHTML = "";
+    v.forEach((x, i) => {
+      const t = el("button", "thumb" + (i === img ? " on" : ""), `<img src="${esc(src(x.u))}" alt="">${x.l}`);
+      t.onclick = () => { img = i; paint(); };
+      $("thumbs").appendChild(t);
+    });
+    const multi = v.length > 1;
+    $("imgPrev").style.visibility = $("imgNext").style.visibility = multi ? "visible" : "hidden";
+    $("thumbs").style.display = multi ? "flex" : "none";
+    $("vCat").textContent = a.category || "";
+    $("vTitle").textContent = a.title;
+    $("vDesc").textContent = a.description || "";
+    $("vYear").textContent = a.date ? String(a.date).slice(0, 4) : "";
+    const buy = $("vBuy");
+    if (a.gumroad) { buy.href = a.gumroad; buy.classList.remove("disabled"); buy.firstElementChild.textContent = "Buy on Gumroad"; }
+    else { buy.removeAttribute("href"); buy.classList.add("disabled"); buy.firstElementChild.textContent = "Not for sale yet"; }
+    $("counter").textContent = (cur + 1) + " / " + shown.length;
+  }
+  const stepImg = d => { const n = views(shown[cur]).length; img = (img + d + n) % n; paint(); };
+  const stepPiece = d => { const n = shown.length; open(shown[(cur + d + n) % n].id); };
+
+  $("close").onclick = close;
+  $("imgPrev").onclick = () => stepImg(-1);
+  $("imgNext").onclick = () => stepImg(1);
+  $("pPrev").onclick = () => stepPiece(-1);
+  $("pNext").onclick = () => stepPiece(1);
+  document.addEventListener("keydown", e => {
+    if (!$("viewer").classList.contains("open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowRight") stepImg(1);
+    if (e.key === "ArrowLeft") stepImg(-1);
+  });
+  // Swipe between artwork + mockups on phones
+  let tx = null;
+  $("stageImg").addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: true});
+  $("stageImg").addEventListener("touchend", e => {
+    if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) stepImg(dx < 0 ? 1 : -1);
+  });
+  // Light deterrent against right-click saving
+  document.addEventListener("contextmenu", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
+
+  function routeFromHash() {
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (h && h !== "work" && h !== "about" && art.some(a => a.id === h)) show(h);
+    else if ($("viewer").classList.contains("open")) close();
+  }
+  window.addEventListener("hashchange", routeFromHash);
+  window.addEventListener("scroll", () => document.querySelector("header").classList.toggle("scrolled", scrollY > 10), {passive: true});
+
+  load();
+})();
+</script>
+</body>
+</html>
